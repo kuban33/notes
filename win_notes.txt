@@ -1,0 +1,44 @@
+#get list of connected users
+quser /SERVER:g2
+qwinsta /SERVER:g2
+
+#disconnect user remotely
+tsdiscon <sessionid> /SERVER:g2
+
+#logoff user remotely
+logoff <sessionid> /SERVER:g2
+
+#information groups, about user
+gpresult /R
+gpresult /V
+
+#symbolik link
+mklink link.per \\r\ref.per
+
+#system info
+systeminfo /S art
+
+#task kill kills all mmc.exe processes
+taskkill /F /IM mmc.exe
+
+#create new windows service
+sc create lmgrd start= "delayed-auto" binpath= "C:\start.bat"
+
+sc create lmgrd start= "delayed-auto" binpath= "C:\d.exe -c C:\l.dat -l +C:\l.log"
+
+#delete windows service
+sc delete lmgrd
+
+#checks open port via telnet
+telnet server 1189 
+
+#wipe free space
+cipher /w:c
+
+#nlookup variation get host from ip
+NBTSTAT -A 10.10.10.10
+
+#POWERSHELL add/remove permissions
+$files = Get-ChildItem .\
+foreach ($file in $files) { icacls $file /grant kuban:F }
+foreach ($file in $files) { icacls $file /remove kuban }

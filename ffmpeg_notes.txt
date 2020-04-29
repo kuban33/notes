@@ -1,0 +1,26 @@
+#convert to mp3 variable bitrate
+ffmpeg -i input.m4a -c:a libmp3lame -q:a 2 -map 0:a -map_metadata -1 output.mp3
+-q:a 2 ... variable the less the higher quality
+
+#convert to ogg (vorbis) variable bitrate
+ffmpeg -i input.m4a -ss 00:00:05 -c:a libvorbis -q:a 4 -map 0:a -map_metadata -1 output.ogg
+-q:a 2 ... variable the less the higher quality
+
+#detect volume stats
+ffmpeg -i output.mp3 -af "volumedetect" -vn -sn -dn -f null /dev/null
+
+#cut stream
+ffmpeg -i output.mp3 -c copy -ss 00:00:04 output_short.mp3
+-ss ... from
+-t ... duration
+
+#combo
+ffmpeg -i input.m4a -ss 00:00:05 -c:a libmp3lame -q:a 2 -map 0:a -map_metadata -1 output.mp3
+-q:a 2 ... variable the less the higher quality
+
+#info
+ffprobe output.mp3
+
+#downsample 4K
+ffmpeg -i ./4k.mp4 -vf scale=1600:900 -c:v libx264 -crf 20 -preset slow -c:a copy ./900.mp4
+

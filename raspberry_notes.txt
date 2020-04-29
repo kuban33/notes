@@ -1,0 +1,64 @@
+# enable wireless wlan
+rfkill unblock wlan
+ifconfig wlan0 up
+
+iw wlan0 info
+iwlist wlan0 scan
+
+
+# "/etc/dhcpcd.conf"
+ifconfig eth0 192.168.120.30 netmask 255.255.255.252
+
+# /etc/network/interfaces
+cat /etc/network/interfaces
+# interfaces(5) file used by ifup(8) and ifdown(8)
+
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+auto eth0
+iface eth0 inet static
+        address 192.168.120.30/30
+        gateway 192.168.120.29
+
+
+systemctl disable dhcpcd.service
+systemctl disable dhcpcd.service
+
+rfkill unblock wlan
+ifconfig wlan0 up
+iwconfig wlan0 mode ad-hoc
+ifconfig wlan0 10.30.1.1 netmask 255.255.255.0
+iwconfig wlan0 essid kubantest
+iwconfig wlan0 frequency 2427	#channel 4
+
+
+
+# get gateway
+ip r
+route -n
+netstat -r -n
+
+
+
+# disable classic networking
+rpi ~$ sudo -Es
+rpi ~# systemctl mask networking.service dhcpcd.service
+rpi ~# mv /etc/network/interfaces /etc/network/interfaces~
+rpi ~# sed -i '1i resolvconf=NO' /etc/resolvconf.conf
+
+# enable systemd-networkd
+rpi ~# systemctl enable systemd-networkd.service systemd-resolved.service
+rpi ~# ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+
+rpi ~# cat > /etc/systemd/network/08-wifi.network <<EOF
+[Match]
+Name=wl*
+[Network]
+Address=192.168.4.1/24
+EOF
+
+
+
+
+$ iw wlan0 set type ibss

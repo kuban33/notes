@@ -1,0 +1,39 @@
+#man to command
+PS> Get-Help cat
+
+
+#POWERSHELL add/remove permissions
+PS> $files = Get-ChildItem .\
+foreach ($file in $files) { icacls $file /grant kuban:F }
+foreach ($file in $files) { icacls $file /remove kuban }
+
+
+#FIND
+PS> $files=Get-ChildItem -Path .\dir\ -File -Include *.xml -Recurse -ErrorAction SilentlyContinue
+
+#ZIP
+PS> Compress-Archive -Path 'C:\dir\in\*.xml' -DestinationPath 'C:\dir\in\pack.zip' -Force
+
+#PS parameters
+ param (
+    [string]$server = "http://defaultserver",
+    [Parameter(Mandatory=$true)][string]$username,
+    [string]$password = $( Read-Host "Input password, please" )
+ )
+
+#TEST FOLDER FILE
+PS> Test-Path .\in -PathType Container
+True
+PS> Test-Path .\ahoj.txt -PathType Container
+False
+PS> Test-Path .\ahoj.txt -PathType Leaf
+True
+
+#find files newer
+Get-ChildItem -Path .\dir\ -File -Filter "*.xml" -Recurse | Where-Object LastWriteTime -gt ((Get-Date).AddHours(-48))
+
+#which alternative
+Get-Command pscp
+
+#create date
+[datetime]::ParseExact("20200101","yyyyMMdd",$null)

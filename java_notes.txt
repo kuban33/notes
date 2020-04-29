@@ -1,0 +1,71 @@
+- can't build because of different version
+  - change version in pom
+  - find older version in tortoise and update to it local repository
+
+
+- throwing exception to log from which class it was called
+
+    private static final Logger log = LoggerFactory.getLogger(FileData.class);
+    public void setProperty(MetaType type, Object item){
+        //added logging for debug, from which class it was called
+        log.debug("Setting property - " + type.name());
+        if(type.equals(MetaType.FTP_INFO)) {
+            FtpInfo ftpInfo = (FtpInfo) item;
+            log.debug("FTP INFO changed to - " + ftpInfo.getFolder());
+            try{
+                throw new Exception();
+            }catch(Exception ex) {
+                log.debug("Called from:" + Arrays.toString(ex.getStackTrace()));
+            }
+        }
+
+
+
+    public void setProperty(MetaType type, Object item){
+        /*DEBUG*/
+        //added logging for debug, from which class it was called
+        log.debug("Setting property - " + type.name());
+        
+        if(type.equals(MetaType.LOT_INFO_VALID)) {
+            log.debug("LOT_INFO_VALID changed to - " + item.toString());
+            try{
+                throw new Exception();
+            }catch(Exception ex) {
+                log.debug("Called from:" + Arrays.toString(ex.getStackTrace()));
+            }
+        }
+        if(type.equals(MetaType.UNVALIDATED)) {
+            log.debug("UNVALIDATED changed to - " + item.toString());
+            try{
+                throw new Exception();
+            }catch(Exception ex) {
+                log.debug("Called from:" + Arrays.toString(ex.getStackTrace()));
+            }
+        }
+        
+        properties.put(type, item);
+    }
+
+
+- sorting objects
+        List<MetadataInfo> mList = li.getMetadataInfos();
+        
+        if(mList == null || mList.isEmpty()){
+            return null;
+        }
+        
+        if(mList.size() > 1){
+            //* Sort
+            Collections.sort(mList, new Comparator<MetadataInfo>() {
+                @Override
+                public int compare(MetadataInfo m1, MetadataInfo m2){
+                    return m1.getMetadataTime().compareTo(m2.getMetadataTime()) * (-1);
+                }
+            });    
+        }
+
+
+
+- maven new version into library
+  deploy
+

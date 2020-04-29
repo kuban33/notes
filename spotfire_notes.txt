@@ -1,0 +1,7 @@
+# dense rank will give global rank
+
+
+# filter last 2 values
+((Min([RANK_START_TIME]) over [LOCATION] = 1) AND (([RANK_START_TIME] = 2) OR ([RANK_START_TIME] = 3)))
+OR
+((Min([RANK_START_TIME]) over [LOCATION] != 1) AND (([RANK_START_TIME] = (Min([RANK_START_TIME]) over [LOCATION])) OR  ([RANK_START_TIME] = (Min([RANK_START_TIME]) over [LOCATION])+1) ))
