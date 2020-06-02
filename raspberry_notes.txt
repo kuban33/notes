@@ -1,3 +1,12 @@
+#RASPBERRY update
+apt update
+apt list --upgradable
+apt full-upgrade
+
+#distro update
+apt update
+apt -y dist-upgrade
+
 # enable wireless wlan
 rfkill unblock wlan
 ifconfig wlan0 up
@@ -59,6 +68,44 @@ Address=192.168.4.1/24
 EOF
 
 
-
-
 $ iw wlan0 set type ibss
+
+
+
+#Connect to WiFi
+$ cat >> /etc/wpa_supplicant/wpa_supplicant.conf
+network={
+        ssid="WIFIk"
+        psk="-583zB45"
+}ap	
+
+$ wpa_supplicant -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B
+
+# WARNING will terminate current eth session, second still running do not know why
+$ route add default gw 192.168.137.1
+$ route del default
+
+
+# DEBIAN
+ip link set dev wlan0 up
+wpa_supplicant -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B
+dhclient wlan0
+ip addr show
+
+OR
+wpa_passphrase "WIFIk" "-583zB45" > /etc/wpa_supplicant/wpa_supplicant.conf
+cat > /etc/network/interfaces.d/wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+        wpa-ssid WIFIk
+        wpa-psk a30024d992cdf9a51910dece96e87ae829de2c3c76cce80f8994570c2c8bddd5
+
+ifup wlan0
+
+ip route add 10.0.0.0/8 via 192.168.120.29 dev eth0
+ip route replace default via 192.168.137.1 dev wlan0
+
+https://wiki.debian.org/wl#supported
+
+apt install linux-image-arm64
+apt install linux-headers-arm64

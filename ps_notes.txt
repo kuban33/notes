@@ -37,3 +37,8 @@ Get-Command pscp
 
 #create date
 [datetime]::ParseExact("20200101","yyyyMMdd",$null)
+
+#CSV import
+$CSVfile = Import-Csv ".\table.csv"
+$CSVfile | Format-Table | Select -First 10
+

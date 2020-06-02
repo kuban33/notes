@@ -1,0 +1,19 @@
+CLI sqlite3:
+############
+
+# dump to ascii file:
+$ ./sqlite3.exe DUT_SGMB5A3600032.kdbx .dump > DUT_SGMB5A3600032.txt
+
+
+# start open db
+$ sqlite3 DUT_SGMB5A3600032.kdbx
+
+# tables
+sqlite> .tables
+
+# show headers
+sqlite> .headers on
+
+# modes
+sqlite> .mode list
+sqlite> .mode column
